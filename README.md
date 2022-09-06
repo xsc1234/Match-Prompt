@@ -1,7 +1,7 @@
 # Match-Prompt
 Match-Prompt: Improving Multi-task Generalization Ability for Neural Text Matching via Prompt Learning (CIKM 2022)
 
-Paper: https://arxiv.org/abs/2204.02725
+Paper : https://arxiv.org/abs/2204.02725
 ```
 @inproceedings{Match-Prompt,
   author    = {Shicheng Xu and
