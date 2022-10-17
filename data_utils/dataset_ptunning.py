@@ -887,23 +887,13 @@ def load_adhoc_mq(filname,qe):
     print(dev_neg)
     print(test_pos)
     print(test_neg)
-    # random.shuffle(train_neg_list)
-    # train_neg_list = train_neg_list[:train_pos]
-    # random.shuffle(dev_neg_list) #训练的时候这一块写错了，写成dev_pos_list了，不过问题不大
-    # dev_neg_list = dev_neg_list[:dev_pos]
-    # random.shuffle(test_neg_list)
-    # test_neg_list = test_neg_list[:test_pos]
 
     train_data = train_pos_list + train_neg_list
     dev_data = dev_pos_list + dev_neg_list
     test_data = test_pos_list + test_neg_list
-    # random.shuffle(train_data)
-    # random.shuffle(dev_data)
-    # random.shuffle(test_data)
     for key in dic_qels_dev.keys():
         dic_qels_dev[key] = sorted(dic_qels_dev[key], key=lambda item: item[1],reverse = True)
     return train_data,dev_data,test_data,dic_qels_dev,dic_qels_test
-    #return train_data[:20000],dev_data[:5000],test_data[:5000]
 
 
 def load_adhoc_mq_train(filname,qe):
@@ -1079,7 +1069,7 @@ def load_adhoc_mq_train(filname,qe):
     print(test_neg)
     random.shuffle(train_neg_list)
     train_neg_list = train_neg_list[:train_pos]
-    random.shuffle(dev_neg_list) #训练的时候这一块写错了，写成dev_pos_list了，不过问题不大
+    random.shuffle(dev_neg_list)
     dev_neg_list = dev_neg_list[:dev_pos]
     random.shuffle(test_neg_list)
     test_neg_list = test_neg_list[:test_pos]
@@ -1090,7 +1080,6 @@ def load_adhoc_mq_train(filname,qe):
     random.shuffle(train_data)
     random.shuffle(dev_data)
     random.shuffle(test_data)
-    #shuffle 防止正负样本各自堆在一起 虽然可能截取到的测试集和验证集数据不同，不过影响不大
     return train_data[:20000],dev_data[:5000],test_data[:5000]
 
 def load_mli(filname,q):
@@ -1107,10 +1096,6 @@ def load_mli(filname,q):
                 dic_temp['label'] = 'relevant'
             else:
                 dic_temp['label'] = 'irrelevant'
-            # elif(item['anirrelevanttator_labels'][0] == 'neutral'):
-            #     dic_temp['label'] = 'irrelevant'
-            # elif(item['anirrelevanttator_labels'][0] == 'contradiction'):
-            #     dic_temp['label'] = 'Contradiction'
             data.append(dic_temp)
     return data
 
@@ -1188,10 +1173,6 @@ def load_snli(filname,q):
             else:
                 dic_temp['label'] = 'irrelevant'
                 neg += 1
-            # elif(item['anirrelevanttator_labels'][0] == 'neutral'):
-            #     dic_temp['label'] = 'irrelevant'
-            # elif(item['anirrelevanttator_labels'][0] == 'contradiction'):
-            #     dic_temp['label'] = 'Contradiction'
             data.append(dic_temp)
     print(pos)
     print(neg)
@@ -1387,7 +1368,7 @@ def load_dialogue(filname,q):
             dic_temp['label'] = 'relevant'
             pos += 1
             data.append(dic_temp)
-            for i in range(1): #随机采样负样本
+            for i in range(1):
                 dic_temp = {}
                 dic_temp['q1'] = line[0]
                 neg_index = random.randint(0,len(lines)-1)
@@ -1405,56 +1386,6 @@ def load_dialogue(filname,q):
     print(neg)
     return data
 
-# def load_dailydialogue(filname,q):
-#     data = []
-#     with open(filname,'r') as reddit:
-#         lines = reddit.readlines()
-#         last_q2 = ''
-#         first_line = False
-#         len_all = len(lines) - 1
-#         for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
-#             if(not '__eou__' in lines[idx+1]):
-#                 line = lines[idx][:-1].split('__eou__')
-#                 q1 = line[0]
-#                 round_count = 0
-#                 for idx_line in range(1,len(line)):
-#                     dic_temp = {}
-#                     dic_temp['q1'] = q1
-#                     dic_temp['q2'] = line[idx_line]
-#                     dic_temp['q'] = q
-#                     dic_temp['label'] = 'relevant'
-#                     data.append(dic_temp)
-#                     #print(dic_temp)
-#                     # 采样负样本
-#                     dic_temp = {}
-#                     dic_temp['q1'] = q1
-#                     #neg_index = random.randint(0, len(lines) - 1)
-#                     neg_index = 0
-#                     if(idx < len(lines)-1):
-#                         neg_index = idx+1
-#                     #for neg_index in range(len(lines)-1):
-#                     while 1:
-#                         if (not '__eou__' in lines[neg_index]):
-#                             neg_index = (neg_index+1) % len_all
-#                             continue
-#                         neg_line = (lines[neg_index].split('__eou__'))[0]
-#                         if neg_line == q1:
-#                             neg_index = (neg_index + 1) % len_all
-#                             continue
-#                         neg_q2 = (lines[neg_index].split('__eou__'))[1]
-#                         dic_temp['q2'] = neg_q2
-#                         dic_temp['q'] = q
-#                         dic_temp['label'] = 'irrelevant'
-#                         data.append(dic_temp)
-#                         break
-#                         #print(dic_temp)
-#                     q1 = line[idx_line]
-#                     round_count += 1
-#                     if(round_count == 3):
-#                         break
-#     return data
-
-
 
 def build_answer_base(filname):
     answer_base = {}
@@ -1464,7 +1395,7 @@ def build_answer_base(filname):
         last_q2 = ''
         first_line = False
         len_all = len(lines) - 1
-        for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
+        for idx in range(len(lines)-1):
             if(not '__eou__' in lines[idx+1]):
                 #line = lines[idx][:-1].split('__eou__')
                 line = re.split('__eou__|\t', lines[idx][:-1])
@@ -1476,15 +1407,13 @@ def build_answer_base(filname):
                         answer_base[q1].append(line[idx_line])
                     else:
                         answer_base[q1] = [line[idx_line]]
-                    #print(answer_base[q1])
-                    #neg_index = random.randint(0, len(lines) - 1)
                     neg_index = 0
                     if(idx < len(lines)-1):
                         neg_index = idx+1
                     #for neg_index in range(len(lines)-1):
                     neg_num = 0
                     while 1:
-                        if (not '__eou__' in lines[neg_index]): ## 循环寻找满足条件的负样本，每个query找49个
+                        if (not '__eou__' in lines[neg_index]):
                             neg_index = (neg_index+1) % len_all
                             continue
                         #neg_line = (lines[neg_index].split('__eou__'))[0]
@@ -1520,7 +1449,7 @@ def load_dailydialogue_mrr(filname,answer_base,q):
         last_q2 = ''
         first_line = False
         len_all = len(lines) - 1
-        for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
+        for idx in range(len(lines)-1):
             if(not '__eou__' in lines[idx+1]):
                 #line = lines[idx][:-1].split('__eou__')
                 line = re.split('__eou__|\t', lines[idx][:-1])
@@ -1566,7 +1495,7 @@ def load_dailydialogue_mrr_task(filname,answer_base,q):
         last_q2 = ''
         first_line = False
         len_all = len(lines) - 1
-        for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
+        for idx in range(len(lines)-1):
             if(not '__eou__' in lines[idx+1]):
                 line = lines[idx][:-1].split('__eou__')
                 q1 = line[0]
@@ -1685,7 +1614,7 @@ def load_dailydialogue(filname,q):
         lines = reddit.readlines()
         last_q2 = ''
         first_line = False
-        for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
+        for idx in range(len(lines)-1):
             if(not '__eou__' in lines[idx+1]):
                 line = lines[idx][:-1].split('__eou__')
                 q1 = line[0]
@@ -1698,7 +1627,7 @@ def load_dailydialogue(filname,q):
                     dic_temp['label'] = 'relevant'
                     data.append(dic_temp)
                     #print(dic_temp)
-                    for i in range(1):  # 随机采样负样本
+                    for i in range(1):
                         dic_temp = {}
                         dic_temp['q1'] = q1
                         neg_index = random.randint(0, len(lines) - 1)

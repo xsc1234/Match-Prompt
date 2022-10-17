@@ -823,7 +823,7 @@ def load_dialogue(filname):
             dic_temp['label'] = 'relevant'
             pos += 1
             data.append(dic_temp)
-            for i in range(1): #随机采样负样本
+            for i in range(1):
                 dic_temp = {}
                 dic_temp['q1'] = line[0]
                 neg_index = random.randint(0,len(lines)-1)
@@ -840,52 +840,6 @@ def load_dialogue(filname):
     print(neg)
     return data
 
-# def load_dailydialogue(filname):
-#     data = []
-#     with open(filname,'r') as reddit:
-#         lines = reddit.readlines()
-#         last_q2 = ''
-#         first_line = False
-#         len_all = len(lines)-1
-#         for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
-#             if(not '__eou__' in lines[idx+1]):
-#                 line = lines[idx][:-1].split('__eou__')
-#                 q1 = line[0]
-#                 round_count = 0
-#                 for idx_line in range(1,len(line)):
-#                     dic_temp = {}
-#                     dic_temp['q1'] = q1
-#                     dic_temp['q2'] = line[idx_line]
-#                     dic_temp['label'] = 'relevant'
-#                     data.append(dic_temp)
-#                     #print(dic_temp)
-#                     # 采样负样本
-#                     dic_temp = {}
-#                     dic_temp['q1'] = q1
-#                     #neg_index = random.randint(0, len(lines) - 1)
-#                     neg_index = 0
-#                     if(idx < len(lines)-1):
-#                         neg_index = idx+1
-#                     #for neg_index in range(len(lines)-1):
-#                     while 1:
-#                         if (not '__eou__' in lines[neg_index]):
-#                             neg_index = (neg_index+1) % len_all
-#                             continue
-#                         neg_line = (lines[neg_index].split('__eou__'))[0]
-#                         if neg_line == q1:
-#                             neg_index = (neg_index + 1) % len_all
-#                             continue
-#                         neg_q2 = (lines[neg_index].split('__eou__'))[1]
-#                         dic_temp['q2'] = neg_q2
-#                         dic_temp['label'] = 'irrelevant'
-#                         data.append(dic_temp)
-#                         break
-#                         #print(dic_temp)
-#                     q1 = line[idx_line]
-#                     round_count += 1
-#                     if(round_count == 3):
-#                         break
-#     return data
 
 
 def load_dailydialogue(filname):
@@ -894,7 +848,7 @@ def load_dailydialogue(filname):
         lines = reddit.readlines()
         last_q2 = ''
         first_line = False
-        for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
+        for idx in range(len(lines)-1):
             if(not '__eou__' in lines[idx+1]):
                 line = lines[idx][:-1].split('__eou__')
                 q1 = line[0]
@@ -906,7 +860,7 @@ def load_dailydialogue(filname):
                     dic_temp['label'] = 'relevant'
                     data.append(dic_temp)
                     #print(dic_temp)
-                    for i in range(1):  # 随机采样负样本
+                    for i in range(1):
                         dic_temp = {}
                         dic_temp['q1'] = q1
                         neg_index = random.randint(0, len(lines) - 1)
@@ -929,46 +883,6 @@ def load_dailydialogue(filname):
                         break
     return data
 
-# def load_dailydialogue(filname):
-#     data = []
-#     with open(filname,'r') as reddit:
-#         lines = reddit.readlines()
-#         last_q2 = ''
-#         first_line = False
-#         for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
-#             if(not '__eou__' in lines[idx+1]):
-#                 line = lines[idx][:-1].split('__eou__')
-#                 q1 = line[0]
-#                 round_count = 0
-#                 for idx_line in range(1,len(line)):
-#                     dic_temp = {}
-#                     dic_temp['q1'] = q1
-#                     dic_temp['q2'] = line[idx_line]
-#                     dic_temp['label'] = 'relevant'
-#                     data.append(dic_temp)
-#                     #print(dic_temp)
-#                     for i in range(1):  # 随机采样负样本
-#                         dic_temp = {}
-#                         dic_temp['q1'] = q1
-#                         neg_index = random.randint(0, len(lines) - 1)
-#                         if (not '__eou__' in lines[neg_index]):
-#                             continue
-#                         neg_line = (lines[neg_index].split('__eou__'))[0]
-#                         while neg_line == q1:
-#                             neg_index = random.randint(0, len(lines) - 1)
-#                             if (not '__eou__' in lines[neg_index]):
-#                                 continue
-#                             neg_line = (lines[neg_index].split('__eou__'))[0]
-#                         neg_q2 = (lines[neg_index].split('__eou__'))[1]
-#                         dic_temp['q2'] = neg_q2
-#                         dic_temp['label'] = 'irrelevant'
-#                         data.append(dic_temp)
-#                         #print(dic_temp)
-#                     q1 = line[idx_line]
-#                     round_count += 1
-#                     if(round_count == 3):
-#                         break
-#     return data
 
 def load_dia_movie(conversation,lines):
     data = []

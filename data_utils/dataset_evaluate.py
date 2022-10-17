@@ -550,7 +550,7 @@ def load_dailydialogue(filname):
         lines = reddit.readlines()
         last_q2 = ''
         first_line = False
-        for idx in range(len(lines)-1): ##确定这一行是对话轮数最多的那行
+        for idx in range(len(lines)-1):
             if(not '__eou__' in lines[idx+1]):
                 line = lines[idx][:-1].split('__eou__')
                 q1 = line[0]
@@ -562,7 +562,7 @@ def load_dailydialogue(filname):
                     dic_temp['label'] = 'relevant'
                     data.append(dic_temp)
                     #print(dic_temp)
-                    for i in range(3):  # 随机采样负样本
+                    for i in range(3):
                         dic_temp = {}
                         dic_temp['q1'] = q1
                         neg_index = random.randint(0, len(lines) - 1)
