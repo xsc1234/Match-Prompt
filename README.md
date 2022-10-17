@@ -14,5 +14,15 @@ Paper : https://arxiv.org/abs/2204.02725
   year      = {2022},
 }
 ```
-# Under Construction
-The project is under construction and we will open source as soon as possible.
+
+## Specialization Stage
+```
+cd train_continuous_prompt_hp
+python cli_all_layer_adhoc_6.py #Train prompt continuous embedding for different tasks
+```
+## Generalization Stage
+```
+python mixed_training
+```
+## Details running tutorial
+Tutorial is comming.
